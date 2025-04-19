@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="description" content="Juego educativo infantil: TABLITAS CHAMPIONS">
+  <title>TABLITAS CHAMPIONS</title>
+
+  <!-- Estilos principales -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body class="inicio">
+
+  <!-- 🎵 Música de fondo -->
+  <audio id="musica-fondo" src="{{ url_for('static', filename='assets/sounds/fondo.mp3') }}" autoplay loop></audio>
+
+  <div class="contenedor-inicio">
+    <h1 class="titulo-inicio">
+      ¡BIENVENIDOS A <br><span>TABLITAS CHAMPIONS</span>!
+    </h1>
+
+    <!-- Botones principales del menú -->
+    <div class="botones-inicio">
+      <a href="{{ url_for('operacion') }}" class="btn btn-naranja">JUGAR</a>
+      <a href="{{ url_for('personajes') }}" class="btn btn-celeste">ELEGIR PERSONAJE</a>
+
+      <!-- Botones secundarios abajo -->
+      <div class="botones-abajo">
+        <a href="{{ url_for('configuracion') }}" class="btn btn-morado">
+          <img src="{{ url_for('static', filename='assets/iconos/gear.svg') }}" alt="Icono configuración"> CONFIGURACIÓN
+        </a>
+        <a href="{{ url_for('logros') }}" class="btn btn-verde">
+          <img src="{{ url_for('static', filename='assets/iconos/trofeo.svg') }}" alt="Icono logros"> LOGROS
+        </a>
+      </div>
+    </div>
+
+    <!-- Imágenes de los personajes -->
+    <div class="personajes-inicio">
+      <img src="{{ url_for('static', filename='assets/img/personaje_nino.png') }}" alt="Personaje niño con capa roja" />
+      <img src="{{ url_for('static', filename='assets/img/personaje_robot.png') }}" alt="Personaje robot celeste" />
+      <img src="{{ url_for('static', filename='assets/img/personaje_nina.png') }}" alt="Personaje niña con sombrero" />
+    </div>
+  </div>
+
+  <!-- Accesibilidad -->
+  <script src="{{ url_for('static', filename='accesibilidad.js') }}"></script>
+
+  <!-- 🎵 Sonidos -->
+  <audio id="sonido-click" src="{{ url_for('static', filename='assets/sounds/click.mp3') }}" preload="auto"></audio>
+  <audio id="sonido-correcto" src="{{ url_for('static', filename='assets/sounds/correcto.mp3') }}" preload="auto"></audio>
+  <audio id="sonido-incorrecto" src="{{ url_for('static', filename='assets/sounds/incorrecto.mp3') }}" preload="auto"></audio>
+  <audio id="sonido-logro" src="{{ url_for('static', filename='assets/sounds/logro.mp3') }}" preload="auto"></audio>
+  <audio id="sonido-transicion" src="{{ url_for('static', filename='assets/sounds/transicion.mp3') }}" preload="auto"></audio>
+
+  <!-- ✅ Script para sonido de clic -->
+  <script>
+    const sonidoClick = document.getElementById('sonido-click');
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        sonidoClick.currentTime = 0;
+        sonidoClick.play();
+      });
+    });
+
+    // Opcional: Asegura que la música comience si el navegador bloquea autoplay
+    window.addEventListener('click', () => {
+      const musica = document.getElementById('musica-fondo');
+      if (musica.paused) {
+        musica.play();
+      }
+    });
+  </script>
+</body>
+</html>
+<footer class="footer-derechos">
+  <p>© 2025 <strong>BM Studios</strong>. Todos los derechos reservados.<br>
+  Creado por <strong>Brian Molina</strong>.</p>
+</footer>

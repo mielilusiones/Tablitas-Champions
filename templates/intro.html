@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>BM Studios - Intro</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .logo-container {
+      text-align: center;
+      opacity: 0;
+      transform: scale(0.8);
+      animation: aparecer 2s ease-out forwards;
+    }
+
+    .logo-container img {
+      max-width: 300px;
+      height: auto;
+    }
+
+    .firma {
+      color: white;
+      font-size: 1.2rem;
+      margin-top: 20px;
+      opacity: 0;
+      animation: aparecer-texto 2s ease-out 1s forwards;
+    }
+
+    @keyframes aparecer {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes aparecer-texto {
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="logo-container">
+    <img src="/static/assets/logo_bm_studios.png" alt="BM Studios Logo">
+    <div class="firma">Brian Ezequiel Molina – BM Studios ©</div>
+  </div>
+
+  <script>
+    // Redirige al menú después de 3 segundos
+    setTimeout(() => {
+      window.location.href = "/menu";
+    }, 3000);
+  </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elegir Personaje</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script defer src="{{ url_for('static', filename='personaje.js') }}"></script>
+</head>
+<body class="fondo-inicio">
+
+  <div class="contenedor-personajes">
+    <h1 class="titulo-principal">ELIGE TU PERSONAJE</h1>
+
+    <div class="seleccion-personaje">
+      <div class="card-personaje" onclick="seleccionarPersonaje('nino')" tabindex="0" role="button" aria-label="Niño Valiente">
+        <img src="{{ url_for('static', filename='assets/img/personaje_nino.png') }}" alt="Niño Valiente">
+        <p>Niño Valiente</p>
+      </div>
+
+      <div class="card-personaje" onclick="seleccionarPersonaje('nina')" tabindex="0" role="button" aria-label="Niña Estrella">
+        <img src="{{ url_for('static', filename='assets/img/personaje_nina.png') }}" alt="Niña Estrella">
+        <p>Niña Estrella</p>
+      </div>
+
+      <div class="card-personaje" onclick="seleccionarPersonaje('robot')" tabindex="0" role="button" aria-label="Robot Azul">
+        <img src="{{ url_for('static', filename='assets/img/personaje_robot.png') }}" alt="Robot Azul">
+        <p>Robot Azul</p>
+      </div>
+    </div>
+
+    <button class="btn btn-volver" onclick="window.location.href='{{ url_for('menu') }}'">⬅ VOLVER</button>
+  </div>
+    <script src="{{ url_for('static', filename='accesibilidad.js') }}"></script>
+
+</body>
+</html>

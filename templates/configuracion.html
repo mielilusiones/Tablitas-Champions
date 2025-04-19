@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Configuración - Tablitas Champions</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<style>
+  body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background-color: #f0f8ff;
+    text-align: center;
+    padding: 40px;
+    color: #333; /* Texto más oscuro */
+  }
+
+  h1 {
+    font-size: 36px;
+    color: #8e24aa; /* Violeta fuerte */
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 2px #ccc;
+  }
+
+  .config-opciones {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: left;
+    background-color: #ffffffcc; /* Fondo blanco semitransparente */
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .config-opciones label {
+    display: block;
+    margin: 15px 0 5px;
+    font-weight: bold;
+    color: #444;
+    font-size: 18px;
+  }
+
+  .config-opciones select,
+  .config-opciones input[type="checkbox"] {
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+
+  .boton-volver {
+    margin-top: 30px;
+    padding: 12px 24px;
+    font-size: 18px;
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .boton-volver:hover {
+    background-color: #ffa726;
+  }
+</style>
+
+</head>
+<body>
+  <h1>Configuración del juego (en desarrollo)</h1>
+
+  <div class="config-opciones">
+  <label for="idioma">🌐 Idioma del juego:</label>
+  <select id="idioma">
+    <option value="es">Español</option>
+    <option value="en">Inglés</option>
+  </select>
+
+  <label>
+    ⚫️ <input type="checkbox" id="modo-contraste">
+    Activar alto contraste
+  </label>
+
+  <label>
+    🧘 <input type="checkbox" id="modo-tranquilo">
+    Activar modo tranquilo
+  </label>
+</div>
+
+  <button class="boton-volver" onclick="window.location.href='{{ url_for('menu') }}'">⬅️ Volver al menú</button>
+
+  <script>
+    // Guardar configuración (solo demostración)
+    document.getElementById('idioma').addEventListener('change', function () {
+      localStorage.setItem('idioma', this.value);
+    });
+
+    document.getElementById('modo-contraste').addEventListener('change', function () {
+      localStorage.setItem('contraste', this.checked);
+    });
+
+    document.getElementById('modo-tranquilo').addEventListener('change', function () {
+      localStorage.setItem('modoTranquilo', this.checked);
+    });
+  </script>
+</body>
+</html>
+<script>
+  // Cargar configuraciones al iniciar
+  window.addEventListener('DOMContentLoaded', () => {
+    const contraste = localStorage.getItem('contraste') === 'true';
+    const tranquilo = localStorage.getItem('modoTranquilo') === 'true';
+
+    // Marcar las casillas si estaban activadas
+    document.getElementById('modo-contraste').checked = contraste;
+    document.getElementById('modo-tranquilo').checked = tranquilo;
+
+    // Aplicar clases al <body>
+    if (contraste) document.body.classList.add('modo-contraste');
+    if (tranquilo) document.body.classList.add('modo-tranquilo');
+  });
+
+  // Guardar y aplicar cambio de contraste
+  document.getElementById('modo-contraste').addEventListener('change', function () {
+    localStorage.setItem('contraste', this.checked);
+    document.body.classList.toggle('modo-contraste', this.checked);
+  });
+
+  // Guardar y aplicar cambio de modo tranquilo
+  document.getElementById('modo-tranquilo').addEventListener('change', function () {
+    localStorage.setItem('modoTranquilo', this.checked);
+    document.body.classList.toggle('modo-tranquilo', this.checked);
+  });
+
+  // Guardar idioma
+  document.getElementById('idioma').addEventListener('change', function () {
+    localStorage.setItem('idioma', this.value);
+  });
+</script>

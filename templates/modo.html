@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Elegir operación</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script defer src="{{ url_for('static', filename='modo.js') }}"></script>
+</head>
+<body class="fondo-juego">
+
+  <button class="btn btn-volver" onclick="window.location.href='{{ url_for('menu') }}'">⬅ Volver al menú</button>
+
+  <div class="contenedor-juego">
+    <h1 class="titulo">¿Qué apendremos hoy?</h1>
+
+    <div class="opciones-operacion">
+      <button onclick="seleccionarOperacion('suma')">➕ Suma</button>
+      <button onclick="seleccionarOperacion('resta')">➖ Resta</button>
+      <button onclick="seleccionarOperacion('multiplicacion')">✖️ Multiplicación</button>
+      <button onclick="seleccionarOperacion('division')">➗ División</button>
+    </div>
+  </div>
+
+  <script>
+   function seleccionarOperacion(modo) {
+       localStorage.setItem('modoOperacion', modo);
+       window.location.href = 'juego.html';
+}
+
+  </script>
+
+</body>
+</html>

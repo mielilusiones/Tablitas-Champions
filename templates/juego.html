@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Juego - Tablitas Champions</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    @keyframes entrada-personaje {
+      0% {
+        opacity: 0;
+        transform: scale(0.5) rotate(-10deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+    }
+
+    .personaje-juego img.animar-personaje {
+      animation: entrada-personaje 1s ease-out;
+    }
+
+    .opcion {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 1.5rem;
+      border-radius: 30px;
+      background-color: #fff7c2;
+      border: 3px solid #f3c43e;
+      cursor: pointer;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+    }
+
+    .opcion:hover {
+      transform: scale(1.1);
+    }
+
+    .opcion:active {
+      transform: scale(0.95);
+      box-shadow: inset 1px 1px 4px rgba(0,0,0,0.2);
+    }
+
+    .estrella-animada {
+      font-size: 2.5rem;
+      animation: brilloEstrella 1s ease-in-out;
+    }
+
+    @keyframes brilloEstrella {
+      0% { transform: scale(0); opacity: 0; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1); opacity: 0; }
+    }
+
+    .celebracion {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2.5rem;
+      background: gold;
+      padding: 10px 20px;
+      border-radius: 30px;
+      box-shadow: 0 0 20px rgba(255,215,0,0.7);
+      animation: brilloEstrella 1s ease-in-out;
+    }
+  </style>
+</head>
+<body class="fondo-juego">
+
+  <button class="btn btn-verde" onclick="window.location.href='{{ url_for('menu') }}'">⬅ Volver al menú</button>
+
+  <div class="juego-container">
+    <div class="personaje-juego">
+      <img id="personaje-juego" src="" alt="Personaje elegido" />
+    </div>
+
+    <div class="burbuja-mensaje">
+      <span id="preguntaTexto" class="pregunta-texto">¿3 × 4 = ?</span>
+    </div>
+
+    <div class="opciones" id="opcionesContainer">
+      <!-- Opciones generadas dinámicamente -->
+    </div>
+
+    <div id="resultado" class="burbuja-mensaje" style="display: none;"></div>
+    <div id="celebracion" class="celebracion" style="display: none;">🎉 ¡Logro alcanzado! 🎉</div>
+  </div>
+
+  <!-- Sonidos -->
+  <audio id="vozInicio" src="{{ url_for('static', filename='assets/audio/vamos_a_jugar.mp3') }}"></audio>
+  <audio id="sonido-click" src="{{ url_for('static', filename='assets/sounds/click.mp3') }}" preload="auto"></audio>
+  <audio id="sonido-correcto" src="{{ url_for('static', filename='assets/sounds/correcto.mp3') }}" preload="auto"></audio>
+  <audio id="sonido-incorrecto" src="{{ url_for('static', filename='assets/sounds/incorrecto.mp3') }}" preload="auto"></audio>
+  <audio id="sonido-logro" src="{{ url_for('static', filename='assets/sounds/logro.mp3') }}" preload="auto"></audio>
+  <audio id="sonido-transicion" src="{{ url_for('static', filename='assets/sounds/transicion.mp3') }}" preload="auto"></audio>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+  const personaje = localStorage.getItem("personaje");
+  const personajeImg = document.getElementById("personaje-juego");
+  const voz = document.getElementById("vozInicio");
+
+  const rutas = {
+    personaje_nino: "{{ url_for('static', filename='assets/img/personaje_nino.png') }}",
+    personaje_nina: "{{ url_for('static', filename='assets/img/personaje_nina.png') }}",
+    personaje_robot: "{{ url_for('static', filename='assets/img/personaje_robot.png') }}"
+  };
+
+  if (personaje && rutas["personaje_" + personaje]) {
+    personajeImg.src = rutas["personaje_" + personaje];
+    personajeImg.classList.add("animar-personaje");
+    setTimeout(() => {
+      voz.play();
+    }, 500);
+  }
+
+  let modoOperacion = localStorage.getItem("modoOperacion") || "suma";
+  console.log("Modo de operación:", modoOperacion);
+
+  let operador;
+  switch (modoOperacion) {
+    case 'suma': operador = '+'; break;
+    case 'resta': operador = '-'; break;
+    case 'multiplicacion': operador = '×'; break;
+    case 'division': operador = '÷'; break;
+    default: operador = '+'; modoOperacion = 'suma'; break;
+  }
+
+  const preguntaTexto = document.getElementById('preguntaTexto');
+  const opcionesContainer = document.getElementById('opcionesContainer');
+  const resultadoDiv = document.getElementById('resultado');
+  const celebracionDiv = document.getElementById('celebracion');
+  const sonidoCorrecto = document.getElementById('sonido-correcto');
+  const sonidoIncorrecto = document.getElementById('sonido-incorrecto');
+  const sonidoLogro = document.getElementById('sonido-logro');
+
+  let respuestaCorrecta = null;
+  let respuestasCorrectas = parseInt(localStorage.getItem("respuestasCorrectas") || "0");
+
+  function generarPregunta() {
+    let a = Math.floor(Math.random() * 10) + 1;
+    let b = Math.floor(Math.random() * 10) + 1;
+    let pregunta = '';
+
+    switch (modoOperacion) {
+      case 'suma':
+        respuestaCorrecta = a + b;
+        pregunta = `${a} + ${b}`;
+        break;
+      case 'resta':
+        if (a < b) [a, b] = [b, a];
+        respuestaCorrecta = a - b;
+        pregunta = `${a} - ${b}`;
+        break;
+      case 'multiplicacion':
+        respuestaCorrecta = a * b;
+        pregunta = `${a} × ${b}`;
+        break;
+      case 'division':
+        respuestaCorrecta = a;
+        const producto = a * b;
+        pregunta = `${producto} ÷ ${b}`;
+        break;
+    }
+
+    preguntaTexto.textContent = `¿${pregunta} = ?`;
+    mostrarOpciones(generarOpciones(respuestaCorrecta));
+  }
+
+  function generarOpciones(correcta) {
+    const opciones = new Set();
+    opciones.add(correcta);
+    while (opciones.size < 3) {
+      let aleatorio = correcta + Math.floor(Math.random() * 10) - 5;
+      if (aleatorio !== correcta && aleatorio >= 0) {
+        opciones.add(aleatorio);
+      }
+    }
+    return Array.from(opciones).sort(() => Math.random() - 0.5);
+  }
+
+  function mostrarOpciones(opciones) {
+    opcionesContainer.innerHTML = '';
+    opciones.forEach(op => {
+      const btn = document.createElement('button');
+      btn.className = 'opcion';
+      btn.textContent = op;
+      btn.onclick = () => verificarRespuesta(op);
+      opcionesContainer.appendChild(btn);
+    });
+  }
+
+  function verificarRespuesta(seleccion) {
+    resultadoDiv.style.display = 'block';
+    if (seleccion === respuestaCorrecta) {
+      resultadoDiv.innerHTML = '✅ ¡Muy bien!<div class="estrella-animada">🌟</div>';
+      sonidoCorrecto.play();
+      respuestasCorrectas += 1;
+      localStorage.setItem("respuestasCorrectas", respuestasCorrectas);
+
+      if ([5, 10, 20].includes(respuestasCorrectas)) {
+        celebracionDiv.style.display = 'block';
+        sonidoLogro.play();
+        setTimeout(() => {
+          celebracionDiv.style.display = 'none';
+        }, 2000);
+      }
+
+      setTimeout(() => {
+        resultadoDiv.style.display = 'none';
+        generarPregunta();
+      }, 1500);
+    } else {
+      resultadoDiv.innerHTML = '❌ Intenta de nuevo';
+      sonidoIncorrecto.play();
+    }
+  }
+
+  generarPregunta();
+
+    });
+  </script>
+
+  <script src="{{ url_for('static', filename='accesibilidad.js') }}"></script>
+  <script src="{{ url_for('static', filename='juego.js') }}"></script>
+
+</body>
+</html>
+<footer class="footer-derechos">
+  <p>© 2025 <strong>BM Studios</strong>. Todos los derechos reservados.<br>
+  Creado por <strong>Brian Molina</strong>.</p>
+</footer>
