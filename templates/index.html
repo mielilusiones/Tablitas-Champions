@@ -8,12 +8,12 @@
   <title>TABLITAS CHAMPIONS</title>
 
   <!-- Estilos principales -->
-  <<link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body class="inicio">
 
   <!-- 🎵 Música de fondo -->
-  <audio id="musica-fondo" src="{{ url_for('static', filename='assets/sounds/fondo.mp3') }}" autoplay loop></audio>
+  <audio id="musica-fondo" src="assets/sounds/fondo.mp3" autoplay loop></audio>
 
   <div class="contenedor-inicio">
     <h1 class="titulo-inicio">
@@ -22,37 +22,37 @@
 
     <!-- Botones principales del menú -->
     <div class="botones-inicio">
-      <a href="{{ url_for('operacion') }}" class="btn btn-naranja">JUGAR</a>
-      <a href="{{ url_for('personajes') }}" class="btn btn-celeste">ELEGIR PERSONAJE</a>
+      <a href="operacion.html" class="btn btn-naranja">JUGAR</a>
+      <a href="personajes.html" class="btn btn-celeste">ELEGIR PERSONAJE</a>
 
       <!-- Botones secundarios abajo -->
       <div class="botones-abajo">
-        <a href="{{ url_for('configuracion') }}" class="btn btn-morado">
-          <img src="{{ url_for('static', filename='assets/iconos/gear.svg') }}" alt="Icono configuración"> CONFIGURACIÓN
+        <a href="configuracion.html" class="btn btn-morado">
+          <img src="assets/iconos/gear.svg" alt="Icono configuración"> CONFIGURACIÓN
         </a>
-        <a href="{{ url_for('logros') }}" class="btn btn-verde">
-          <img src="{{ url_for('static', filename='assets/iconos/trofeo.svg') }}" alt="Icono logros"> LOGROS
+        <a href="logros.html" class="btn btn-verde">
+          <img src="assets/iconos/trofeo.svg" alt="Icono logros"> LOGROS
         </a>
       </div>
     </div>
 
     <!-- Imágenes de los personajes -->
     <div class="personajes-inicio">
-      <img src="{{ url_for('static', filename='assets/img/personaje_nino.png') }}" alt="Personaje niño con capa roja" />
-      <img src="{{ url_for('static', filename='assets/img/personaje_robot.png') }}" alt="Personaje robot celeste" />
-      <img src="{{ url_for('static', filename='assets/img/personaje_nina.png') }}" alt="Personaje niña con sombrero" />
+      <img src="assets/img/personaje_nino.png" alt="Personaje niño con capa roja" />
+      <img src="assets/img/personaje_robot.png" alt="Personaje robot celeste" />
+      <img src="assets/img/personaje_nina.png" alt="Personaje niña con sombrero" />
     </div>
   </div>
 
   <!-- Accesibilidad -->
-  <script src="{{ url_for('static', filename='accesibilidad.js') }}"></script>
+  <script src="accesibilidad.js"></script>
 
   <!-- 🎵 Sonidos -->
-  <audio id="sonido-click" src="{{ url_for('static', filename='assets/sounds/click.mp3') }}" preload="auto"></audio>
-  <audio id="sonido-correcto" src="{{ url_for('static', filename='assets/sounds/correcto.mp3') }}" preload="auto"></audio>
-  <audio id="sonido-incorrecto" src="{{ url_for('static', filename='assets/sounds/incorrecto.mp3') }}" preload="auto"></audio>
-  <audio id="sonido-logro" src="{{ url_for('static', filename='assets/sounds/logro.mp3') }}" preload="auto"></audio>
-  <audio id="sonido-transicion" src="{{ url_for('static', filename='assets/sounds/transicion.mp3') }}" preload="auto"></audio>
+  <audio id="sonido-click" src="assets/sounds/click.mp3" preload="auto"></audio>
+  <audio id="sonido-correcto" src="assets/sounds/correcto.mp3" preload="auto"></audio>
+  <audio id="sonido-incorrecto" src="assets/sounds/incorrecto.mp3" preload="auto"></audio>
+  <audio id="sonido-logro" src="assets/sounds/logro.mp3" preload="auto"></audio>
+  <audio id="sonido-transicion" src="assets/sounds/transicion.mp3" preload="auto"></audio>
 
   <!-- ✅ Script para sonido de clic -->
   <script>
@@ -72,9 +72,11 @@
       }
     });
   </script>
+
+  <footer class="footer-derechos">
+    <p>© 2025 <strong>BM Studios</strong>. Todos los derechos reservados.<br>
+    Creado por <strong>Brian Molina</strong>.</p>
+  </footer>
+
 </body>
 </html>
-<footer class="footer-derechos">
-  <p>© 2025 <strong>BM Studios</strong>. Todos los derechos reservados.<br>
-  Creado por <strong>Brian Molina</strong>.</p>
-</footer>
